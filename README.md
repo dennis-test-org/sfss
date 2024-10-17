@@ -151,4 +151,4 @@ The tests cover key functionalities like encryption, file operations, and OAuth 
 
 ---
 
-### **LIMITAIONS:**
+### **LIMITATIONS:**
