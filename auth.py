@@ -8,7 +8,7 @@ import threading
 import os
 from config import Config
 from logger import logger
-from datetime import datetime
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,8 +16,6 @@ load_dotenv()
 class OAuthHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         """Override to suppress HTTP server logs."""
-        # Uncommented the next line to log to the application logger instead
-        # logger.info("%s - - [%s] %s" % (self.client_address[0], self.log_date_time_string(), format%args))
         pass  # Suppress the default logging
 
     def do_GET(self):
@@ -53,7 +51,7 @@ def authenticate():
     webbrowser.open(url)
     logger.info('Opened browser for GitHub OAuth authentication.')
 
-    server_address = ('localhost', 8000)  # Ensure port matches CALLBACK_URL
+    server_address = ('localhost', 8000)
     server = HTTPServer(server_address, OAuthHandler)
 
     # Run the server in a separate thread to prevent blocking
@@ -62,6 +60,8 @@ def authenticate():
             server.handle_request()
         except Exception as e:
             logger.error(f'HTTP server error: {e}')
+        finally:
+            server.server_close()  # Ensure socket is properly closed
 
     thread = threading.Thread(target=run_server)
     thread.start()
@@ -97,7 +97,7 @@ def save_token(token, username):
     token_file = os.path.join(Config.TOKENS_DIR, f'{username}.env')
     with open(token_file, 'w') as f:
         f.write(f"GITHUB_TOKEN={token}\n")
-        f.write(f"AUTH_TIMESTAMP={datetime.utcnow().isoformat()}\n")
+        f.write(f"AUTH_TIMESTAMP={datetime.now(timezone.utc).isoformat()}\n")  # Use timezone-aware datetime
     logger.info(f'Token saved for user {username}.')
 
 def set_active_user(username):
@@ -137,10 +137,16 @@ def is_authenticated():
     token, timestamp_str = token_data
     if not token or not timestamp_str:
         return False
+
+    # Ensure auth_time is timezone-aware
     auth_time = datetime.fromisoformat(timestamp_str)
-    current_time = datetime.utcnow()
+    if auth_time.tzinfo is None:
+        auth_time = auth_time.replace(tzinfo=timezone.utc)
+
+    current_time = datetime.now(timezone.utc)
     delta = current_time - auth_time
-    if delta.total_seconds() > 300:  # 5 minutes = 300 seconds
+
+    if delta.total_seconds() > 300:
         logger.info(f'Authentication expired for user {username}.')
         return False
     return True
