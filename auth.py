@@ -8,7 +8,7 @@ import threading
 import os
 from config import Config
 from logger import logger
-from datetime import datetime, timezone
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -138,7 +138,7 @@ def is_authenticated():
     if not token or not timestamp_str:
         return False
     auth_time = datetime.fromisoformat(timestamp_str)
-    current_time = datetime.now(timezone.utc)
+    current_time = datetime.utcnow()
     delta = current_time - auth_time
     if delta.total_seconds() > 300:  # 5 minutes = 300 seconds
         logger.info(f'Authentication expired for user {username}.')
