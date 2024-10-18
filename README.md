@@ -35,7 +35,7 @@ To get started with the SFSS project, you need to clone the repository and insta
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/sfss.git
+git https://github.com/dennis-test-org/sfss.git
 cd sfss
 ```
 
@@ -93,6 +93,8 @@ python main.py auth
 ```
 
 After successful authentication, your GitHub access token will be saved locally, and you will be able to perform file operations.
+
+**If Step  4 is not done correctly, the cli might freeze. So to fix it just type http://localhost:8000/callback into your browser to exit the code.**
 
 ### File Operations
 
@@ -158,3 +160,15 @@ The tests cover key functionalities like encryption, file operations, and OAuth 
 ### **LIMITATIONS:**
 
 There are lot of improvments that can be made in future to make this more secure.
+
+1. Exposing the client secret to public.
+
+  Ask u can see in the 
+
+2. Environment Variable Exposure
+
+3. 
+
+4. 
+
+5. 
