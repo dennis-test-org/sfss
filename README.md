@@ -157,18 +157,25 @@ The tests cover key functionalities like encryption, file operations, and OAuth 
 
 ---
 
-### **LIMITATIONS:**
+Following security aspects are added to the code.
+
+1. Validates and sanitizes all user inputs to prevent injection attacks.
+2. Uses GitHub's OAuth for secure user login.Unauthenticated users wont be able to use the cli.
+
+
+### **Limitations:**
 
 There are lot of improvments that can be made in future to make this more secure.
 
-1. Exposing the client secret to public.
+1. **Encryption and Key Management**:  Exposing the client secret to public. Becuase usually the secret keep is kept at backend side away from the user. But this implementaion user is able to see SECRET key. Currnetly one encryption key is used to encrypt all the data,in future better to use mutiple keys for different users.
 
-  Ask u can see in the 
+    **Solution:**
 
-2. Environment Variable Exposure
+          Store encryption keys in secure locations, such as environment variables, encrypted files, or dedicated key management services (e.g., AWS KMS, Azure Key Vault).
 
-3. 
+          Implement Key Rotation: Regularly rotate encryption keys and handle re-encryption of existing data as needed.
+    
+2. **Lack of Integrity Checks**: Without verifying the integrity of encrypted files, tampering or corruption may go undetected. Implmenting a Hash-Based Message Authentication Code provides confidentiality and integrity.
 
-4. 
 
-5. 
+3. **Folder Traversal**: User can do folder traversal to location and see data.Currently apps store all the important data in base directory. So if users with high privilege can traverse the folders. To prevent it in future,can make use of directory permission.Ensure that the application runs with the least privileges necessary. For instance, the application should not require administrative or root privileges to operate, minimizing the potential impact of a compromised process. 
