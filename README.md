@@ -13,6 +13,10 @@ The Secure File Storage System (SFSS) is a command-line tool that allows users t
 - **Token management**: OAuth tokens are securely saved and managed.
 - **Logging**: Basic logging of authentication events and file operations.
 
+## Architecure
+
+![Alt Text](./arch/SFSS.jpg)
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -22,7 +26,7 @@ The Secure File Storage System (SFSS) is a command-line tool that allows users t
   - [Authenticating via GitHub OAuth](#authenticating-via-github-oauth)
   - [File Operations](#file-operations)
 - [Testing](#testing)
-- [License](#license)
+- [Limitations](#limitations)
 
 ## Installation
 
@@ -152,3 +156,5 @@ The tests cover key functionalities like encryption, file operations, and OAuth 
 ---
 
 ### **LIMITATIONS:**
+
+There are lot of improvments that can be made in future to make this more secure.
