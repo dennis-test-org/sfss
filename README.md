@@ -141,7 +141,9 @@ You can run unit tests for the project to ensure everything is working as expect
 Make sure you have the necessary testing packages installed:
 
 ```bash
-pip install -r requirements-dev.txt
+cd tests
+pip install -r requirement-devs.txt
+cd..
 ```
 
 ### Step 2: Run Tests
